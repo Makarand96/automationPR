@@ -1,0 +1,4 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","5128","@Smoke End to End Test for ADIDAS ORIGINAL","","2026-04-04","passed","2026-04-04","","sectionSixEnE.spec.ts","",""
+"","4977","@Smoke End to End Test for iphone 13 pro","","2026-04-04","passed","2026-04-04","","sectionSixEnE.spec.ts","",""
+"","6462","@Smoke End to End Test for Custom data in fixture","","2026-04-04","passed","2026-04-04","","TestRUn.spec.ts","",""

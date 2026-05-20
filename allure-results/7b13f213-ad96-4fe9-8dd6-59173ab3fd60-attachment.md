@@ -1,0 +1,148 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: ApiLogin.spec.js >> End to End using API
+- Location: tests\ApiLogin.spec.js:36:5
+
+# Error details
+
+```
+Error: expect(received).toStrictEqual(expected) // deep equality
+
+Expected: "6a0cbc1c17ee3e78ba894d8c"
+Received: [Function textContent]
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - navigation [ref=e5]:
+    - generic [ref=e7]:
+      - link "Automation Automation Practice":
+        - /url: ""
+        - generic [ref=e8] [cursor=pointer]:
+          - heading "Automation" [level=3] [ref=e9]
+          - paragraph [ref=e10]: Automation Practice
+    - text: 
+    - link "Get Shortlisted by Recruiters - Take QA Skill Assessments on TechSmartHire" [ref=e11] [cursor=pointer]:
+      - /url: https://techsmarthire.com/
+    - list [ref=e12]:
+      - listitem [ref=e13] [cursor=pointer]:
+        - button " HOME" [ref=e14]:
+          - generic [ref=e15]: 
+          - text: HOME
+      - listitem
+      - listitem [ref=e16] [cursor=pointer]:
+        - button " ORDERS" [ref=e17]:
+          - generic [ref=e18]: 
+          - text: ORDERS
+      - listitem [ref=e19] [cursor=pointer]:
+        - button " Cart" [ref=e20]:
+          - generic [ref=e21]: 
+          - text: Cart
+      - listitem [ref=e22] [cursor=pointer]:
+        - button "Sign Out" [ref=e23]:
+          - generic [ref=e24]: 
+          - text: Sign Out
+  - generic [ref=e28]:
+    - paragraph [ref=e30]: Thank you for Shopping With Us
+    - generic [ref=e31]:
+      - generic [ref=e32]: order summary
+      - generic [ref=e34]:
+        - text: Order Id
+        - generic [ref=e35]: 6a0cbc1c17ee3e78ba894d8c
+      - generic [ref=e37]:
+        - generic [ref=e39]:
+          - generic [ref=e40]: Billing Address
+          - paragraph [ref=e41]: mak7796@yopmail.com
+          - paragraph [ref=e42]: Country - Cuba
+        - generic [ref=e44]:
+          - generic [ref=e45]: Delivery Address
+          - paragraph [ref=e46]: mak7796@yopmail.com
+          - paragraph [ref=e47]: Country - Cuba
+      - generic [ref=e50]: Product Ordered
+      - generic [ref=e53]:
+        - img [ref=e55]
+        - generic [ref=e56]:
+          - generic [ref=e57]: ADIDAS ORIGINAL
+          - generic [ref=e58]:
+            - generic [ref=e59]: by ECOM
+            - generic [ref=e60]: $ 11500
+      - generic [ref=e62] [cursor=pointer]: View Orders
+```
+
+# Test source
+
+```ts
+  1  | import {test,expect,request} from '@playwright/test';
+  2  | const data = JSON.parse(JSON.stringify(require("../Utils_ts/placeorderTestData.json")));
+  3  | const loginPayLoad = {userEmail:"mak7796@yopmail.com",userPassword:"Satara@12345"};
+  4  | const orderPayload  ={orders: [{country: "Cuba", productOrderedId: "6960eae1c941646b7a8b3ed3"}]};
+  5  | 
+  6  | let token;
+  7  | let orderId;
+  8  | test.beforeAll(async()=>
+  9  | {
+  10 | const apiContext = await request.newContext();
+  11 | const loginResponse = await apiContext.post("https://rahulshettyacademy.com/api/ecom/auth/login",
+  12 |     {
+  13 |     data:loginPayLoad,
+  14 |     })
+  15 |     const responseBody = await loginResponse.json();
+  16 |     expect(loginResponse.ok()).toBeTruthy();
+  17 |     token = responseBody.token;
+  18 |     console.log("Token:", token);
+  19 | 
+  20 |     const orderResponse =await apiContext.post("https://rahulshettyacademy.com/api/ecom/order/create-order",
+  21 |         {
+  22 |             data:orderPayload,
+  23 |             headers:
+  24 |             {
+  25 |                 'Authorization':token,
+  26 |                 'Content-Type': 'application/json'   
+  27 |             },
+  28 |             
+  29 |         })
+  30 |         const OrderResponseJson= await orderResponse.json();
+  31 |         orderId = await OrderResponseJson.orders[0];
+  32 |         console.log(orderId);
+  33 |     
+  34 | });
+  35 | 
+  36 | test('End to End using API', async ({ page }) => {
+  37 |   await page.goto('https://rahulshettyacademy.com/client/');
+  38 |    await page.evaluate((value)=>{localStorage.setItem('token',value);},token);
+  39 |     await page.reload();
+  40 | 
+  41 |    await page.locator('.card-body b').last().waitFor();    // we are waiting here for specific element. Wait for works for only 1 element, so we provided first/last
+  42 |    console.log(await page.locator('.card-body b').allTextContents()); // we are using wait above as method allTextContents  do not support auto wait from  Playwright
+  43 | 
+  44 |    await page.goto("https://rahulshettyacademy.com/client/#/dashboard/myorders");
+  45 | 
+  46 |    const rows = page.locator(".table-bordered tbody tr");
+  47 |    const rowCount  = await rows.count();
+  48 | 
+  49 |    for(let i =0; i<rowCount;i++)
+  50 |    {
+  51 |     const orderIdRow =await rows.nth(i).locator('th').textContent();
+  52 |     if(orderIdRow.trim().includes(orderId))
+  53 |     {
+  54 |         await rows.nth(i).locator('td').filter({has: page.getByRole('button',{name:"View"})}).click();
+  55 |         break;
+  56 |     }
+  57 |    }
+  58 |    await page.locator(".col-text").waitFor();
+> 59 |    expect(page.locator(".col-text").textContent).toStrictEqual(orderId);
+     |                                                  ^ Error: expect(received).toStrictEqual(expected) // deep equality
+  60 |     //Create a new Order
+  61 | 
+  62 | })
+  63 | 
+  64 | 
+```

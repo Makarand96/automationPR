@@ -1,0 +1,24 @@
+{
+  "name": "testuiauto",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "regression": "npx playwright test",
+    "SmokeTest": "npx playwright test --grep \"@Smoke\"",
+    "SafariConfig": "npx playwright test --config playwright.config1.js --project=safari"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/mcp": "^0.0.70",
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^24.12.2",
+    "allure-playwright": "^3.6.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "playwright": "^1.59.1"
+  }
+}

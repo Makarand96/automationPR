@@ -1,0 +1,2 @@
+Login Response Status: 400
+Login Response Body: {"message":"Email is required"}
