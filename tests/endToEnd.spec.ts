@@ -1,8 +1,5 @@
 import { expect } from '@playwright/test';
 import {test} from '../Fixtures/baseTest';
-import { LoginPage } from '../pages/Login';
-import { Dashboard } from '../pages/Dashboard';
-import { MyCartPage } from '../pages/MyCartPage';
 //const data= JSON.parse(JSON.stringify(require('../Utils/testData.json')));
 import testData from '../Utils/testData.json';
 
