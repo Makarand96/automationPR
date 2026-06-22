@@ -1,0 +1,10 @@
+# First get the storage account resource ID
+az storage account show \
+  --name "pwstrgrrd4320" \
+  --resource-group "rrd" \
+  --query id -o tsv
+
+
+//role assignmnet with below details , bc9724c7-6580-4a22-b4d5-f9a0a592e6ea - userid, pwstrgrrbe93a - storage account , resource group name - rrb
+
+az role assignment create --assignee "bc9724c7-6580-4a22-b4d5-f9a0a592e6ea" --role "Storage Blob Data Contributor" --scope "$(az storage account show --name pwstrgrrbe93a --resource-group rrb --query id -o tsv)"
