@@ -20,7 +20,9 @@ jobs:
       with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
     - name: Run Playwright tests
-      run: npx playwright test
+      env: 
+        PLAYWRIGHT_SERVICE_URL: ${{ vars.PLAYWRIGHT_SERVICE_URL }}
+      run: npx playwright test tests/endToEnd.spec.ts --config=playwright.service.config.ts
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
