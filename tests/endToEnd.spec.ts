@@ -7,8 +7,9 @@ test.describe.configure({mode:'parallel'})
 for(let data of testData)
 {
 
-test(`Add ${data.product_name} to cart`, async ({ page,loginpage,dashboardpage,cartpage }) => {
+test(`Add ${data.product_name} to cart`, async ({ page,loginpage,dashboardpage,cartpage,paymentspage }) => {
 
+  const countryName ='India';
   await loginpage.OpenPageURL();
   await loginpage.ValidLogin(data.username,data.password);
 
@@ -16,6 +17,8 @@ test(`Add ${data.product_name} to cart`, async ({ page,loginpage,dashboardpage,c
   await dashboardpage.navigateToCartPage();
 
   await cartpage.buyProduct(data.product_name);
+
+  await paymentspage.PlaceOrder(countryName);
 
 });
 

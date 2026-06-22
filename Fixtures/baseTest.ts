@@ -2,7 +2,7 @@ import {test as base} from '@playwright/test';
 import { LoginPage } from '../pages/Login';
 import { Dashboard } from '../pages/Dashboard';
 import { MyCartPage } from '../pages/MyCartPage';
-import { PaymentsPage } from '../pages/MyCartPage';
+import { PaymentsPage } from '../pages/PaymentsPage';
 
 interface pageObjects
 {
@@ -29,6 +29,12 @@ export const test =base.extend<pageObjects>({
     {
         const cartpage=new MyCartPage(page);
         await use(cartpage);
+    },
+
+    paymentspage: async ({page},use)=>
+    {
+        const paymentspage = new PaymentsPage(page);
+        await use(paymentspage);
     }
 
 })
