@@ -19,11 +19,11 @@ export default defineConfig(
 
     Note: The HTML reporter must be included before Playwright Workspaces Reporter.
     This configuration will replace any existing reporter settings from your base config.
-    If you're already using other reporters, add them to this array.
-    */
-    // reporter: [
-    //   ["html", { open: "never" }],
-    //   ["@azure/playwright/reporter"],
-    // ],
+    If you're already using other reporters, add them to this array.*/
+
+    reporter: [
+      ["html", { open: "never" }],
+      ["@azure/playwright/reporter"],
+    ],
   }
 );
