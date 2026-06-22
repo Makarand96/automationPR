@@ -2,9 +2,9 @@ import { test, expect } from '@playwright/test';
 
 test('@calendar Calendar Authentication', async ({ browser }) => {
 
-    const monthNo = "6";
-    const yearNo = "2027";
-    const dateNo = "15";
+    const monthNo = "7";
+    const yearNo = "2028";
+    const dateNo = "20";
 
     const context = await browser.newContext();
     const page = await context.newPage();
