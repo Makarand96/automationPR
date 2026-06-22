@@ -5,8 +5,6 @@ test("fill form", async ({ browser }) => {
   const page = await context.newPage();
   await page.goto("https://rahulshettyacademy.com/client/#/auth/register");
 
-  console.log(await page.title());
-
   //  expect (await page.title()).toBe("Let's Shop");
 
   await expect(page).toHaveTitle("Let's Shop");
