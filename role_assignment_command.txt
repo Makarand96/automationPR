@@ -5,6 +5,31 @@ az storage account show \
   --query id -o tsv
 
 
-//role assignmnet with below details , bc9724c7-6580-4a22-b4d5-f9a0a592e6ea - userid, pwstrgrrbe93a - storage account , resource group name - rrb
+//What this command does
+Finds the Service Principal github-playwright.
+Gets its appId (Client ID).
+Gets the Storage Account resource ID.
+Assigns the Storage Blob Data Contributor role on that storage account.
 
+After successful execution, your GitHub service principal will be able to upload/download blobs from the storage account, which is commonly needed for Playwright reports, traces, or artifacts. 
+bc9724c7-6580-4a22-b4d5-f9a0a592e6ea - userid, pwstrgrrbe93a - storage account , resource group name - rrb
+
+Locally trying - my user 
 az role assignment create --assignee "bc9724c7-6580-4a22-b4d5-f9a0a592e6ea" --role "Storage Blob Data Contributor" --scope "$(az storage account show --name pwstrgrrbe93a --resource-group rrb --query id -o tsv)"
+
+
+through github actions - GitHub Service Principal
+az role assignment create --assignee "$(az ad sp list --display-name "github-playwright" --query "[0].appId" -o tsv)" --role "Storage Blob Data Contributor" --scope "$(az storage account show --name pwstrgrrbe93a --resource-group rrb --query id -o tsv)"
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// AUthenticate Azure while executing from github actions, ie creating a contributor role to execute tests
+//az = Azure
+//ad =add
+// sp =service principle
+// github-playwright = human like bot
+//scope is subscriptions
+//json-auth = the authentication will be stored in json and can be provided in playwright.yml file 
+
+az ad sp create-for-rbac --name "github-playwright" --role contributor --scopes /subscriptions/5d6959ac-d455-4db6-86ea-d7d877ff6db3/resourceGroups/rrb --json-auth
